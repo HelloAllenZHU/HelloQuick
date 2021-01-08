@@ -55,12 +55,21 @@ ApplicationWindow {
         }
     }
 
-    StackView {
+    /*StackView {
         id: stackView
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenterOffset: 30
+        anchors.fill: parent
+        //anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.verticalCenterOffset: 30
         anchors.margins: 10
         initialItem: PageLogin {}
+    }*/
+
+    TextEdit {
+      id : wocao
+      textFormat: TextEdit.RichText
+      anchors.centerIn: parent
+      text: "<img src=\"https://avatar.csdn.net/9/F/0/2_u014597198.jpg\">"
+
     }
 
     // 关闭按钮
