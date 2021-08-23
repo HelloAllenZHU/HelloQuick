@@ -1,7 +1,7 @@
-import QtQuick 2.12                         // 导入QtQuick基本库
+﻿import QtQuick 2.12                         // 导入QtQuick基本库
 import QtQuick.Window 2.12                  // 导入QtQuick窗口库
 import QtQuick.Controls 2.12                // 导入QtQuick控件库
-import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls.Styles 1.4          // 导入QtQuick控件样式表库？
 import QtGraphicalEffects 1.4
 
 
@@ -55,21 +55,20 @@ ApplicationWindow {
         }
     }
 
-    /*StackView {
+    StackView {
         id: stackView
         anchors.fill: parent
         //anchors.horizontalCenter: parent.horizontalCenter
         //anchors.verticalCenterOffset: 30
         anchors.margins: 10
         initialItem: PageLogin {}
-    }*/
+    }
 
     TextEdit {
       id : wocao
       textFormat: TextEdit.RichText
       anchors.centerIn: parent
       text: "<img src=\"https://avatar.csdn.net/9/F/0/2_u014597198.jpg\">"
-
     }
 
     // 关闭按钮
