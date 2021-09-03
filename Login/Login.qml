@@ -2,12 +2,15 @@
 import QtQuick.Window 2.12                  // 导入QtQuick窗口库
 import QtQuick.Controls 2.12                // 导入QtQuick控件库
 import QtQuick.Controls.Styles 1.4          // 导入QtQuick控件样式表库？
-import QtGraphicalEffects 1.4
+import QtGraphicalEffects 1.4               // 导入QtQuick影音效果库
 
 
 ApplicationWindow {
     // id
     id: window_login
+
+    // title
+    title: qsTr( "Title" )
 
     // 是否可见(默认不可见)
     visible: true
