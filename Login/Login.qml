@@ -2,7 +2,7 @@
 import QtQuick.Window 2.12                  // 导入QtQuick窗口库
 import QtQuick.Controls 2.12                // 导入QtQuick控件库
 import QtQuick.Controls.Styles 1.4          // 导入QtQuick控件样式表库？
-import QtGraphicalEffects 1.4               // 导入QtQuick影音效果库
+import QtGraphicalEffects 1.4               // 导入QtQuick阴影效果库
 
 
 ApplicationWindow {
