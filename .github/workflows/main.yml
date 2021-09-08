@@ -1,0 +1,45 @@
+# 这是一个基本的工作流(模板)，可以帮助你开始(编写)Action.
+# This is a basic workflow to help you get started with Actions
+
+name: HelloQuick
+
+# 控制工作流何时开始.
+# Controls when the workflow will run
+on:
+  # 在push和pr时(仅master分支)触发工作流.
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+  # 允许你手动地从Actions tab页运行工作流.
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# 工作流由一个或多个作业组成，这些作业可以顺序执行，也可以并行执行.
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # 这个工作流包含一个单一的作业：build.
+  # This workflow contains a single job called "build"
+  build:
+    # 作业运行的(操作系统)平台.
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps 代表了一系列的任务，它们将作为作业的组成部分而被执行。
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # 找GitHub工作区路径下check out你的仓库代码，这样你的作业就可以访问它了
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # 使用平台shell运行单一的命令
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # 使用平台的shell运行一系列命令
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
