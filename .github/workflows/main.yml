@@ -6,7 +6,7 @@ name: HelloQuick
 # 控制工作流何时开始.
 # Controls when the workflow will run
 on:
-  # 在push和pr时(仅master分支)触发工作流.
+  # 在push和pr事件中(仅master分支)触发工作流.
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
@@ -15,7 +15,7 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# 工作流由一个或多个作业组成，这些作业可以顺序执行，也可以并行执行.
+# 一个工作流由一个或多个作业组成，这些作业可以顺序执行，也可以并行执行.
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # 这个工作流包含一个单一的作业：build.
@@ -25,10 +25,10 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
 
-    # Steps 代表了一系列的任务，它们将作为作业的组成部分而被执行。
+    # steps 代表了一系列的任务，它们将作为作业的组成部分而被执行。
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # 找GitHub工作区路径下check out你的仓库代码，这样你的作业就可以访问它了
+      # 在GitHub工作区路径下check out你的仓库代码，这样你的作业就可以访问它了
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
