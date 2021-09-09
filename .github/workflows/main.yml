@@ -2,7 +2,7 @@
 # This is a basic workflow to help you get started with Actions
 
 # 工作流的名称
-name: HelloQuick
+name: main
 
 # 控制工作流何时开始.
 # Controls when the workflow will run
@@ -78,7 +78,7 @@ jobs:
           qmake
           pwd
           ls
-          cmake
+          cmake -S ./ -B ./build
           echo winSdkDir=%WindowsSdkDir% >> %GITHUB_ENV%
           echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
           echo vcToolsInstallDir=%VCToolsInstallDir% >> %GITHUB_ENV%
