@@ -1,6 +1,7 @@
 # 这是一个基本的工作流(模板)，可以帮助你开始(编写)Action.
 # This is a basic workflow to help you get started with Actions
 
+# 工作流的名称
 name: HelloQuick
 
 # 控制工作流何时开始.
@@ -21,26 +22,100 @@ jobs:
   # 这个工作流包含一个单一的作业：build.
   # This workflow contains a single job called "build"
   build:
+    name: Build
     # 作业运行的(操作系统)平台.
     # The type of runner that the job will run on
     runs-on: windows-latest
 
+    strategy:
+      # 矩阵配置
+      matrix:
+        include:
+          # 5.15.2 参考 https://mirrors.cloud.tencent.com/qt/online/qtsdkrepository/windows_x86/desktop/qt5_5152/
+          - qt_ver: 5.15.2
+            qt_arch: win32_msvc2019
+            msvc_arch: x86
+            qt_arch_install: msvc2019
+          #- qt_ver: 5.15.2          
+          #  qt_arch: win64_msvc2019_64
+          #  msvc_arch: x64
+          #  qt_arch_install: msvc2019_64   
+
+    env:
+      # 生成的目标程序名称
+      targetName: HelloQuick.exe
+
     # steps 代表了一系列的任务，它们将作为作业的组成部分而被执行。
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # 安装Qt
+      - name: Install Qt
+        # 使用外部action，这个action专门用来安装Qt
+        uses: jurplel/install-qt-action@v2.13.0
+        with:
+          # Version of Qt to install
+          version: ${{ matrix.qt_ver }}
+          # Target platform for build
+          # target: ${{ matrix.qt_target }}
+          arch: ${{ matrix.qt_arch }}
+          cached: 'false'
+
       # 在GitHub工作区路径下check out你的仓库代码，这样你的作业就可以访问它了
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # 拉取代码
       - uses: actions/checkout@v2
 
-      # 使用平台shell运行单一的命令
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # 使用平台的shell运行一系列命令
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      # msvc编译
+      - name: msvc-build
+        id: build
+        shell: cmd
         run: |
-          echo Add other actions to build,
-          echo test, 
-          echo and deploy your project.
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.msvc_arch }}
+          qmake
+          nmake
+          echo winSdkDir=%WindowsSdkDir% >> %GITHUB_ENV%
+          echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
+          echo vcToolsInstallDir=%VCToolsInstallDir% >> %GITHUB_ENV%
+          echo vcToolsRedistDir=%VCToolsRedistDir% >> %GITHUB_ENV%
+
+      # 打包 
+      - name: package
+        id: package      
+        env:
+          archiveName: ${{ matrix.qt_ver }}-${{ matrix.qt_target }}-${{ matrix.qt_arch }}
+          msvcArch: ${{ matrix.msvc_arch }}          
+        shell: pwsh
+        run: |
+          & scripts\windows-publish.ps1 ${env:archiveName} ${env:targetName}
+          # 记录packageName给后续step
+           $name = ${env:archiveName}
+           echo "::set-output name=packageName::$name"       
+      # tag 查询github-Release
+      # 上传artifacts          
+      #- uses: actions/upload-artifact@v2
+      #  with:
+      #    name: ${{ steps.package.outputs.packageName }}
+      #    path: ${{ steps.package.outputs.packageName }}.zip
+      # tag 上传Release
+      #- name: uploadRelease
+      #  if: startsWith(github.event.ref, 'refs/tags/')
+      #  uses: svenstaro/upload-release-action@v2
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: ${{ steps.package.outputs.packageName }}.zip
+      #    asset_name: ${{ steps.package.outputs.packageName }}.zip
+      #    tag: ${{ github.ref }}
+      #    overwrite: true 
+
+      # 使用平台的shell运行单个命令
+      # Runs a single command using the runners shell
+      #- name: Run a one-line script
+      #  run: echo Hello, world!
+
+      # 使用平台的shell运行多个命令
+      # Runs a set of commands using the runners shell
+      #- name: Run a multi-line script
+      #  run: |
+      #    echo Add other actions to build,
+      #    echo test, 
+      #    echo and deploy your project.
