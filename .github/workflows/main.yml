@@ -59,6 +59,10 @@ jobs:
           # target: ${{ matrix.qt_target }}
           arch: ${{ matrix.qt_arch }}
           cached: 'false'
+          
+      # 安装cmake
+      - name: install-cmake
+        uses: symbitic/install-cmake@master
 
       # 在GitHub工作区路径下check out你的仓库代码，这样你的作业就可以访问它了
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -72,9 +76,9 @@ jobs:
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.msvc_arch }}
           qmake
-          cd D:\a\HelloQuick\HelloQuick
+          #cd D:\a\HelloQuick\HelloQuick
           ls
-          nmake
+          cmake
           echo winSdkDir=%WindowsSdkDir% >> %GITHUB_ENV%
           echo winSdkVer=%WindowsSdkVersion% >> %GITHUB_ENV%
           echo vcToolsInstallDir=%VCToolsInstallDir% >> %GITHUB_ENV%
