@@ -3,8 +3,10 @@
 
 int main(int argc, char *argv[])
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     // 高分辨率支持
     QCoreApplication::setAttribute( Qt::AA_EnableHighDpiScaling );
+#endif
 
     // 应用程序实例
     QGuiApplication app( argc, argv );
